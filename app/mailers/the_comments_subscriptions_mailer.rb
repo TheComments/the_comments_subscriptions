@@ -1,8 +1,6 @@
 class TheCommentsSubscriptionsMailer < ActionMailer::Base
   default from: ::TheCommentsBase.config.default_mailer_email
 
-  include TheCommentsViewHelper
-
   # TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_now
   # TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_later
   def notificate email, comment
@@ -13,7 +11,7 @@ class TheCommentsSubscriptionsMailer < ActionMailer::Base
     mail(
       to: email,
       subject: "TheComments::New Comment",
-      template_path: the_comments_template('mailers'),
+      template_path: ('the_comments/mailers'),
       template_name: "new_comment"
     )
   end

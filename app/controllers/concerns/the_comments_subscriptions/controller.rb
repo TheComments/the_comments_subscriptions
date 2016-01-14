@@ -14,21 +14,21 @@ module TheCommentsSubscriptions
       email_unsubscribe_comment if @type == 'email'
       user_unsubscribe_comment  if @type == 'user'
 
-      render template: view_context.the_comments_template('subscriptions/info')
+      render template: 'the_comments/subscriptions/info'
     end
 
     def unsubscribe_commentable
       email_unsubscribe_commentable if @type == 'email'
       user_unsubscribe_commentable  if @type == 'user'
 
-      render template: view_context.the_comments_template('subscriptions/info')
+      render template: 'the_comments/subscriptions/info'
     end
 
     def unsubscribe_all
       email_unsubscribe_all if @type == 'email'
       user_unsubscribe_all  if @type == 'user'
 
-      render template: view_context.the_comments_template('subscriptions/info')
+      render template: 'the_comments/subscriptions/info'
     end
 
     private
