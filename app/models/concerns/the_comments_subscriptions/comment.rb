@@ -15,7 +15,7 @@ module TheCommentsSubscriptions
       if current_user
         comment.comment_subscriptions.create(user_id: current_user.id)
       else
-        _email = ::TheCommentsBase.normalize_email(contacts)
+        _email = ::TheCommentsBase.normalize_email(comment.contacts)
         if _email.match ::TheCommentsBase::EMAIL_REGEXP
           comment.comment_subscriptions.create(email: _email)
         end
