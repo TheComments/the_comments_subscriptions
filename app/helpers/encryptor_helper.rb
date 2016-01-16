@@ -1,7 +1,8 @@
 module EncryptorHelper
   class << self
     def encryptor
-      @encryptor ||= ActiveSupport::MessageEncryptor.new(Rails.configuration.secret_key_base)
+      skb = Rails.application.secrets.secret_key_base
+      @encryptor ||= ActiveSupport::MessageEncryptor.new(skb)
     end
 
     def crypt str
