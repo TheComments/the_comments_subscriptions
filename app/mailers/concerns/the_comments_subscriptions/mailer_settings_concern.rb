@@ -4,12 +4,14 @@ module TheCommentsSubscriptions
   module MailerSettingsConcern
     extend ActiveSupport::Concern
 
+    class_methods do
+      def smtp?
+        ['smtp', 'letter_opener'].include?(Settings.app.mailer.service)
+      end
+    end
+
     included do
       default template_path: "the_comments/mailers"
-
-      def self.smtp?
-        %w[ smtp letter_opener ].include?(Settings.app.mailer.service)
-      end
 
       # SomeMailer.test_mail.delivery_method.settings
       #
@@ -27,10 +29,6 @@ module TheCommentsSubscriptions
 
     def env_prefix
       'DEV => ' if Rails.env.development?
-    end
-
-    def smtp?
-      Settings.app.mailer.service == 'smtp'
     end
 
     def default_from
