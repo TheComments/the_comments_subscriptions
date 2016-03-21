@@ -27,6 +27,24 @@ module TheCommentsSubscriptions
       logger.debug { "TheComments::Subscriptions::SendNotifications" }
       logger.debug { "*" * 50 }
 
+      notificate_admin!
+      notificate_subscribers!
+    end
+
+    private
+
+    def notificate_admin!
+      comment = self
+      email   = ::Settings.app.mailer.admin_email
+
+      if ::TheCommentsBase.config.async_processing
+        ::TheCommentsSubscriptionsJob.perform_later(email, comment.id)
+      else
+        ::TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_now
+      end
+    end
+
+    def notificate_subscribers!
       comment = self
 
       subscribers_emails.each do |email|
@@ -37,8 +55,6 @@ module TheCommentsSubscriptions
         end
       end
     end
-
-    private
 
     def subscribers_emails
       comment = self

@@ -6,21 +6,23 @@ module TheCommentsSubscriptions
 
     class_methods do
       def smtp?
-        ['smtp', 'letter_opener'].include?(Settings.app.mailer.service)
+        ['smtp', 'letter_opener'].include?(::Settings.app.mailer.service)
       end
     end
 
+    # SomeMailer.test_mail.delivery_method.settings
+    #
     included do
-      default template_path: "the_comments/mailers"
-
-      # SomeMailer.test_mail.delivery_method.settings
-      #
       if smtp?
-        default bcc:  Settings.app.mailer.admin_email
-        default from: Settings.app.mailer.smtp.default.user_name
+        _mailer = ::Settings.app.mailer
+
+        default bcc:  _mailer.admin_email
+        default from: _mailer.smtp.default.user_name
+
+        default template_path: "the_comments/mailers"
 
         def self.smtp_settings
-          Settings.app.mailer.smtp.default.to_h
+          ::Settings.app.mailer.smtp.default.to_h
         end
       end
     end
@@ -29,10 +31,6 @@ module TheCommentsSubscriptions
 
     def env_prefix
       'DEV => ' if Rails.env.development?
-    end
-
-    def default_from
-      Settings.app.mailer.smtp.default.user_name if smtp?
     end
   end
 end

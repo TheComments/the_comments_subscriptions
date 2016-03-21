@@ -2,10 +2,22 @@ class TheCommentsSubscriptionsMailer < ActionMailer::Base
   include ::TheCommentsSubscriptions::MailerSettingsConcern
 
   # For LAYOUT
-  # view_path + 'layouts' + layout_name
-  prepend_view_path "#{ ::Rails.root }/app/views/app"
   prepend_view_path "#{ ::TheCommentsSubscriptions::Engine.root }/app/views/the_comments"
-  layout 'mailer_layout'
+  layout 'mailers/the_comments_layout'
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # INJECT FROM APP VIEW ENGINE
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  voiceless do
+    # Add View Helper for Mailer Preview Fix
+    add_template_helper(MailerImageTagHelper)
+
+    prepend_view_path "#{ ::AppViewEngine::Engine.root }/app/views"
+    include ::AppViewEngine::MailerAttachments
+  end
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # ~ INJECT FROM APP VIEW ENGINE
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   # For MAILER TEMPLATE
   # view_path + template_path + template_name
@@ -19,10 +31,8 @@ class TheCommentsSubscriptionsMailer < ActionMailer::Base
     @comment     = comment
     @commentable = comment.commentable
 
-    mail(
-      to: email,
-      subject: "TheComments::New Comment",
-      template_name: "new_comment"
-    )
+    @subject = "#{ env_prefix }Новый комментарий на сайте"
+
+    mail(to: @email, subject: @subject)
   end
 end

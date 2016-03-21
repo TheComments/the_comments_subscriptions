@@ -10,6 +10,12 @@ module TheCommentsSubscriptions
       before_action :define_subscriptions_params, only: %w[ unsubscribe_comment unsubscribe_commentable unsubscribe_all ]
     end
 
+    def manage
+      @email = EncryptorHelper.decrypt params[:email]
+
+      render template: 'the_comments/subscriptions/manage'
+    end
+
     def unsubscribe_comment
       email_unsubscribe_comment if @type == 'email'
       user_unsubscribe_comment  if @type == 'user'
