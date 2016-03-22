@@ -61,12 +61,12 @@ module TheCommentsSubscriptions
       parents = comment.ancestors.includes(:comment_subscriptions)
 
       subscriptions = parents.map(&:active_subscriptions).compact.flatten
-      users = ::User.where(id: subscriptions.map(&:user_id).compact)
+      users         = ::User.where(id: subscriptions.map(&:user_id).compact)
 
-      u_emails = users.map(&:email).compact
-      g_emails = subscriptions.map(&:email).compact
+      u_emails = users.map(&:email)
+      g_emails = subscriptions.map(&:email)
 
-      (u_emails | g_emails).uniq
+      (u_emails | g_emails).uniq.delete_if{|i| i.blank? }
     end
   end # module Comment
 end

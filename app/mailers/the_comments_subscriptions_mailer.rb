@@ -1,3 +1,7 @@
+# For MAILER TEMPLATE
+# view_path + template_path + template_name
+# default template_path: [ 'the_comments/mailer' ]
+
 class TheCommentsSubscriptionsMailer < ActionMailer::Base
   include ::TheCommentsSubscriptions::MailerSettingsConcern
 
@@ -15,13 +19,6 @@ class TheCommentsSubscriptionsMailer < ActionMailer::Base
     prepend_view_path "#{ ::AppViewEngine::Engine.root }/app/views"
     include ::AppViewEngine::MailerAttachments
   end
-  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # ~ INJECT FROM APP VIEW ENGINE
-  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  # For MAILER TEMPLATE
-  # view_path + template_path + template_name
-  # default template_path: [ 'the_comments/mailer' ]
 
   # TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_now
   # TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_later
