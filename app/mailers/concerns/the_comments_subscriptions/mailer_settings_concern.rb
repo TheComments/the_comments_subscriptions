@@ -16,9 +16,7 @@ module TheCommentsSubscriptions
       if smtp?
         _mailer = ::Settings.app.mailer
 
-        default bcc:  _mailer.admin_email
         default from: _mailer.smtp.default.user_name
-
         default template_path: "the_comments/mailers"
 
         def self.smtp_settings

@@ -1,13 +1,14 @@
+# retry: true,
+# backtrace: true
+
+# TheCommentsSubscriptionsJob.perform_later(email, comment_id)
+# TheCommentsSubscriptionsJob.perform_now(email, comment_id)
+
 class TheCommentsSubscriptionsJob < ActiveJob::Base
   queue_as :the_comments_jobs
 
-  # TheCommentsNotificationsJob.perform_later(email, comment_id)
-  # TheCommentsNotificationsJob.perform_now(email, comment_id)
   def perform(email, comment_id)
-    comment = Comment.find(comment_id)
+    comment = ::Comment.find(comment_id)
     ::TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_now
   end
 end
-
-# retry: true,
-# backtrace: true

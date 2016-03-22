@@ -26,10 +26,10 @@ class TheCommentsSubscriptionsMailer < ActionMailer::Base
   # TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_now
   # TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_later
   # TheCommentsSubscriptionsMailer.notificate("test@test.com", Comment.last).deliver_now
-  def notificate email, comment
+  def notificate email, comment_id
     @email       = email
-    @comment     = comment
-    @commentable = comment.commentable
+    @comment     = Comment.find(comment_id)
+    @commentable = @comment.commentable
 
     @subject = "#{ env_prefix }Новый комментарий на сайте"
 

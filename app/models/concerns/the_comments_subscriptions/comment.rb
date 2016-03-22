@@ -38,9 +38,9 @@ module TheCommentsSubscriptions
       email   = ::Settings.app.mailer.admin_email
 
       if ::TheCommentsBase.config.async_processing
-        ::TheCommentsSubscriptionsJob.perform_later(email, comment.id)
+        ::TheCommentsSubscriptionsWorker.perform_in(15.seconds, email, comment.id)
       else
-        ::TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_now
+        ::TheCommentsSubscriptionsWorker.new.perform(email, comment.id)
       end
     end
 
@@ -49,9 +49,9 @@ module TheCommentsSubscriptions
 
       subscribers_emails.each do |email|
         if ::TheCommentsBase.config.async_processing
-          ::TheCommentsSubscriptionsJob.perform_later(email, comment.id)
+          ::TheCommentsSubscriptionsWorker.perform_in(15.seconds, email, comment.id)
         else
-          ::TheCommentsSubscriptionsMailer.notificate(email, comment).deliver_now
+          ::TheCommentsSubscriptionsWorker.new.perform(email, comment.id)
         end
       end
     end
