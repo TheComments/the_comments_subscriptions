@@ -1,5 +1,5 @@
-# ::TheCommentsSubscriptionsWorker.perform_async('x@x.ru', Comment.last.id)
-# ::TheCommentsSubscriptionsWorker.perform_in(15.seconds, 'x@x.ru', Comment.last.id)
+# ::TheCommentsSubscriptionsWorker.perform_async('zykin-ilya@ya.ru', Comment.last.id)
+# ::TheCommentsSubscriptionsWorker.perform_in(2.seconds, 'zykin-ilya@ya.ru', Comment.last.id)
 
 class TheCommentsSubscriptionsWorker
   include Sidekiq::Worker
